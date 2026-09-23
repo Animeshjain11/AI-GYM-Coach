@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.pyc
+
+# Virtual Environment
+.venv/
+venv/
+
+# Environment Variables
+.env
+
+# Database
+*.db
+
+# macOS
+.DS_Store
+
+# Streamlit Cache
+.streamlit/secrets.toml
