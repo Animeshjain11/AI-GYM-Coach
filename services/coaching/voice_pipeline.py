@@ -64,58 +64,25 @@ class VoicePipeline:
         return None
 
     def process_event(self, event, exercise, metrics):
-        print("EVENT:", event)
-        print("EXERCISE:", exercise)
-        print("METRICS:", metrics)
-
         issue = self._find_form_issue(exercise, metrics)
 
         now = time.time()
 
-        total_reps = (
-            metrics.get("total_reps", 0)
-            or metrics.get("reps", 0)
-            or metrics.get("rep_count", 0)
-        )
+        is_major_issue = event in ["workout_started", "set_completed", "workout_completed"]
 
-        # Workout start par kuch mat bolo
-        if event == "workout_started":
-            return None
-
-        # Workout complete par tabhi bolo jab actual reps hue hon
-        if event == "workout_completed":
-            if total_reps <= 0:
-                return None
-
-        # Set complete par tabhi bolo jab reps hue hon
-        if event == "set_completed":
-            if total_reps <= 0:
-                return None
-
-        # Form issue ke bina coaching mat do
-        if event not in ["set_completed", "workout_completed"]:
+        if not is_major_issue:
             if not issue:
                 return None
-
-            # Spam prevention
+            
             if now - self.last_spoken_at < 5:
                 return None
+            
+        text = self.llm.give_feedback(event, issue)
+        voice = self.tts.speak(text)
 
-        try:
-            text = self.llm.give_feedback(event, issue)
+        self.last_spoken_at = now
 
-            if not text:
-                return None
-
-            voice = self.tts.speak(text)
-
-            self.last_spoken_at = now
-
-            return voice, text
-
-        except Exception as e:
-            print("VoicePipeline Error:", e)
-            return None
+        return voice, text
     
 
 def autoplay_audio(audio_bytes):
