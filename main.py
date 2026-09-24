@@ -198,16 +198,21 @@ def main():
         )
     else:
         context = webrtc_streamer(
-            key="exercise-analysis",
-            mode=WebRtcMode.SENDRECV,
-            video_processor_factory=VideoProcessorClass,
-            rtc_configuration={"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]},
-            media_stream_constraints={
-                "video": True,
-                "audio": False
+        key="exercise-analysis",
+        mode=WebRtcMode.SENDRECV,
+        video_processor_factory=VideoProcessorClass,
+        rtc_configuration={
+            "iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]
+        },
+        media_stream_constraints={
+            "video": {
+                "width": 640,
+                "height": 480
             },
-            async_processing=True
-        )
+            "audio": False
+        },
+        async_processing=False
+    )
 
         sync_metrics_update(context)
 
