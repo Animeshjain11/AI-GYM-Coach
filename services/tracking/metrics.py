@@ -15,6 +15,8 @@ def sync_metrics_update(context):
     
     exercise = st.session_state.get("exercise_type")
 
+    
+
     if not exercise:
         return
     

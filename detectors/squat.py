@@ -68,6 +68,9 @@ class SquatDetector(BaseExercise):
         else:
             depth_status = "N/A"
 
+        print("KNEE ANGLE:", int(knee_angle))
+        print("STAGE:", self.stage)
+        print("REPS:", self.reps)
         return {
             "reps": self.reps,
             "knee_angle": int(knee_angle),
