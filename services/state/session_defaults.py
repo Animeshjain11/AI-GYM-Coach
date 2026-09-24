@@ -3,6 +3,7 @@ import streamlit as st
 
 def initial_session_defaults():
     defaults = {
+        # Workout
         "reps": 0,
         "target_sets": 0,
         "reps_per_set": 0,
@@ -15,20 +16,25 @@ def initial_session_defaults():
         "set_cycle_started_at": 0.0,
         "last_exercise_type": "Squats",
 
-        # Workout plan (set before starting)
+        # Workout Plan
         "workout_started": False,
         "plan_exercise": "Squats",
         "plan_sets": 3,
         "plan_reps": 10,
 
-        # Common Angles
+        # Voice Coach
+        "audio_to_play": None,
+        "coach_feedback": "",
+        "voice_enabled": True,
+
+        # Metrics
         "knee_angle": 0,
         "back_angle": 0,
         "elbow_angle": 0,
         "front_knee_angle": 0,
         "torso_angle": 0,
 
-        # Status fields
+        # Status
         "depth_status": "N/A",
         "body_alignment": "N/A",
         "hip_status": "N/A",

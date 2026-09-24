@@ -66,6 +66,12 @@ def sync_metrics_update(context):
         time_taken = now_ts - started_at
         user_id = st.session_state.get("user_id", 0)
 
+        print("USER ID:", user_id)
+        print("EXERCISE:", exercise)
+        print("SETS:", newly_completed)
+        print("REPS:", newly_completed * reps_per_set)
+        print("TIME:", time_taken)
+
         add_exercise(user_id, exercise, newly_completed * reps_per_set, newly_completed, time_taken)
 
         if st.session_state.get("voice_pipeline"):

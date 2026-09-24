@@ -3,17 +3,26 @@ from gtts import gTTS
 
 
 class TextToSpeech:
+    def __init__(self):
+        pass
+
     def speak(self, text, lang="en"):
-        cleaned = (text or "").strip()
+        try:
+            if not text:
+                return None
 
-        if not cleaned:
-            return
-        
-        buffer = BytesIO()
+            buffer = BytesIO()
 
-        gTTS(text=cleaned, lang=lang).write_to_fp(buffer)
+            gTTS(
+                text=str(text),
+                lang=lang,
+                slow=False
+            ).write_to_fp(buffer)
 
-        buffer.seek(0)
+            buffer.seek(0)
 
-        return buffer.read()
-    
+            return buffer.read()
+
+        except Exception as e:
+            print("TTS ERROR:", e)
+            return None

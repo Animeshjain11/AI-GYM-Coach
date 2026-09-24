@@ -44,7 +44,13 @@ def main():
             
             groq_client = Groq(api_key=api_key)
             llm_coach = LLMCoach(groq_client)
+
             tts = TextToSpeech()
+
+            audio = tts.speak("Hello Animesh")
+            print("AUDIO GENERATED:", audio is not None)
+            print("AUDIO SIZE:", len(audio) if audio else 0)
+
             st.session_state.voice_pipeline = VoicePipeline(llm_coach, tts)
         except Exception as e:
             st.session_state.voice_pipeline = None
@@ -89,7 +95,10 @@ def main():
                     )
                     
                     if result:
-                        st.session_state.audio_to_play, st.session_state.coach_feedback = result
+                        print("VOICE RESULT:", result)
+
+                        st.session_state.audio_to_play = result["audio"]
+                        st.session_state.coach_feedback = result["text"]
 
                 st.session_state.last_notified_sets_completed = 0
                 st.session_state.last_notified_workout_complete = False
@@ -112,8 +121,12 @@ def main():
                         exercise=exercise,
                         metrics={}
                     )
+                    print("VOICE RESULT:", result)
                     if result:
-                        st.session_state.audio_to_play, st.session_state.coach_feedback = result
+                        print("VOICE RESULT:", result)
+
+                        st.session_state.audio_to_play = result["audio"]
+                        st.session_state.coach_feedback = result["text"]
 
                 st.rerun()
 
@@ -169,7 +182,12 @@ def main():
     st.markdown("#### Real-time pose detection with proactive AI voice coaching")
  
     if st.session_state.get("audio_to_play"):
+
+        print("PLAYING AUDIO")
+
         autoplay_audio(st.session_state.audio_to_play)
+
+        st.session_state.audio_to_play = None
 
     if st.session_state.get("coach_feedback"):
         st.markdown("")
